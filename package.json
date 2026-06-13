@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "sync": "node scripts/sync.js"
+    "sync": "node scripts/sync.js && node scripts/build-problem-details.js"
   }
 }

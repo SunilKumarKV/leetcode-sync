@@ -50,7 +50,8 @@ async function buildProblems(submissions) {
         url: buildProblemUrl(details.slug),
         platform: PLATFORM_NAME,
         status: "Solved",
-        solvedAt: submission.solvedAt
+        solvedAt: submission.solvedAt,
+        detailUrl: null
       };
     })
   );

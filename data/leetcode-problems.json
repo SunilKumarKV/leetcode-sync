@@ -18,7 +18,8 @@
       "url": "https://leetcode.com/problems/array-reduce-transformation/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-11-07T14:14:31.000Z"
+      "solvedAt": "2025-11-07T14:14:31.000Z",
+      "detailUrl": null
     },
     {
       "title": "Filter Elements from Array",
@@ -27,7 +28,8 @@
       "url": "https://leetcode.com/problems/filter-elements-from-array/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-09-16T16:07:16.000Z"
+      "solvedAt": "2025-09-16T16:07:16.000Z",
+      "detailUrl": null
     },
     {
       "title": "Apply Transform Over Each Element in Array",
@@ -36,7 +38,8 @@
       "url": "https://leetcode.com/problems/apply-transform-over-each-element-in-array/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-09-16T15:53:56.000Z"
+      "solvedAt": "2025-09-16T15:53:56.000Z",
+      "detailUrl": null
     },
     {
       "title": "Counter II",
@@ -45,7 +48,8 @@
       "url": "https://leetcode.com/problems/counter-ii/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-09-15T17:50:31.000Z"
+      "solvedAt": "2025-09-15T17:50:31.000Z",
+      "detailUrl": null
     },
     {
       "title": "To Be Or Not To Be",
@@ -54,7 +58,8 @@
       "url": "https://leetcode.com/problems/to-be-or-not-to-be/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-09-15T17:42:59.000Z"
+      "solvedAt": "2025-09-15T17:42:59.000Z",
+      "detailUrl": null
     },
     {
       "title": "Counter",
@@ -63,7 +68,8 @@
       "url": "https://leetcode.com/problems/counter/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-09-14T16:07:01.000Z"
+      "solvedAt": "2025-09-14T16:07:01.000Z",
+      "detailUrl": null
     },
     {
       "title": "Create Hello World Function",
@@ -72,7 +78,8 @@
       "url": "https://leetcode.com/problems/create-hello-world-function/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2025-09-14T16:02:44.000Z"
+      "solvedAt": "2025-09-14T16:02:44.000Z",
+      "detailUrl": null
     }
   ],
   "updatedAt": "2026-06-13T02:04:39.147Z"

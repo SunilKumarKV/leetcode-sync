@@ -11,8 +11,9 @@ This project syncs:
 - LeetCode problem URL
 - Platform
 - Status
+- Optional per-problem detail JSON backed by your real local solution files
 
-This project does **not** fetch or expose submitted solution code.
+This project does **not** fetch solution code from LeetCode and does **not** expose any session cookie. Solution code is only published when you add a real local solution file yourself.
 
 ## Project Structure
 
@@ -21,8 +22,12 @@ This project does **not** fetch or expose submitted solution code.
 ├── data/
 │   ├── leetcode-stats.json
 │   ├── leetcode-problems.json
-│   └── metadata.json
+│   ├── metadata.json
+│   ├── problems/
+│   └── solutions/
+│       └── README.md
 ├── scripts/
+│   ├── build-problem-details.js
 │   ├── leetcode.js
 │   └── sync.js
 ├── .github/
@@ -43,6 +48,16 @@ The sync process:
 4. Fetches recent accepted submissions using `recentAcSubmissionList`
 5. Fetches question metadata for each recent accepted problem
 6. Writes clean JSON output into the `data/` directory
+7. Builds per-problem detail JSON only when a matching real solution file exists in `data/solutions/`
+
+## No Mock Data Policy
+
+- No mock data
+- No dummy data
+- No fake solved problems
+- No LeetCode session cookie is stored or exposed
+- Only real synced LeetCode metadata is used
+- Solution code is only read from your committed local files
 
 ## Requirements
 
@@ -141,7 +156,8 @@ Workflow file:
       "url": "https://leetcode.com/problems/two-sum/",
       "platform": "LeetCode",
       "status": "Solved",
-      "solvedAt": "2026-06-12T00:00:00.000Z"
+      "solvedAt": "2026-06-12T00:00:00.000Z",
+      "detailUrl": "https://raw.githubusercontent.com/SunilKumarKV/leetcode-sync/main/data/problems/two-sum.json"
     }
   ],
   "updatedAt": "2026-06-12T00:00:00.000Z"
@@ -169,6 +185,41 @@ Use these URLs in the portfolio:
 - `https://raw.githubusercontent.com/SunilKumarKV/leetcode-sync/main/data/leetcode-stats.json`
 - `https://raw.githubusercontent.com/SunilKumarKV/leetcode-sync/main/data/leetcode-problems.json`
 
+SunilCraft can use each problem item's `detailUrl` to fetch a full solved problem detail page. When no real local solution file exists for a slug, `detailUrl` remains `null` and no detail JSON is generated.
+
+## How To Add Real Solution Code
+
+Add a real accepted solution file at:
+
+- `data/solutions/{slug}.js`
+
+The filename must match the LeetCode `slug` from `leetcode-problems.json`.
+
+Each solution file must start with a block comment that contains your own metadata, followed by your real solution code. The build script reads that file and generates:
+
+- `data/problems/{slug}.json`
+
+See [data/solutions/README.md](/Users/sunilkumarkv/Desktop/Projects/leetcode-sync/data/solutions/README.md) for the required format.
+
+Example generated detail file:
+
+```json
+{
+  "title": "Two Sum",
+  "slug": "two-sum",
+  "difficulty": "Easy",
+  "questionUrl": "https://leetcode.com/problems/two-sum/",
+  "question": "Find two numbers whose sum equals the target and return their indices.",
+  "solutionLanguage": "JavaScript",
+  "solutionCode": "function twoSum(nums, target) { ... }",
+  "explanation": "I scan once, store seen values in a map, and return as soon as I find the complement.",
+  "approach": "Hash map",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(n)",
+  "updatedAt": "2026-06-12T00:00:00.000Z"
+}
+```
+
 ## Error Handling
 
 The sync script fails clearly when:
@@ -176,6 +227,8 @@ The sync script fails clearly when:
 - The LeetCode username is invalid
 - The LeetCode GraphQL request fails
 - The LeetCode response is malformed
+- A real solution file exists but is missing required metadata
+- A real solution file exists but does not contain solution code
 
 If recent submissions are empty, the script still generates valid JSON with an empty `problems` array.
 
@@ -187,10 +240,17 @@ Run the sync:
 npm run sync
 ```
 
+This command:
+
+1. Syncs live LeetCode stats and recent accepted problems
+2. Rebuilds `detailUrl` values in `data/leetcode-problems.json`
+3. Generates `data/problems/{slug}.json` only for problems that have a real matching solution file
+
 ## Notes
 
 - Uses native `fetch` from Node.js 20
 - Uses ESM only
 - Uses async/await only
 - Avoids duplicate logic by separating GraphQL helpers from sync/output logic
+- Never generates fake detail pages when a real solution file is missing
 - Commits updated JSON files automatically from GitHub Actions
