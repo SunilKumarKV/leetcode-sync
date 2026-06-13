@@ -3,10 +3,14 @@
 Add real accepted solution files here using this naming convention:
 
 - `data/solutions/{slug}.js`
+- `data/solutions/index.json`
 
 Example:
 
 - `data/solutions/two-sum.js`
+- `data/solutions/index.json`
+
+Every older solved problem that is not present in `recentAcSubmissionList` must also be added to `data/solutions/index.json`.
 
 Each file must contain:
 
@@ -57,3 +61,4 @@ Rules:
 - Only commit real solution code you want exposed publicly
 - The summary and explanation must be written by you, not copied from LeetCode
 - If a solution file does not exist, no problem detail JSON will be generated
+- If a solution file exists but the slug is missing from both `data/leetcode-problems.json` and `data/solutions/index.json`, it is treated as orphaned

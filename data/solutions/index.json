@@ -1,0 +1,13 @@
+{
+  "solutions": [
+    {
+      "title": "Two Sum",
+      "slug": "two-sum",
+      "difficulty": "Easy",
+      "url": "https://leetcode.com/problems/two-sum/",
+      "platform": "LeetCode",
+      "status": "Solved",
+      "solvedAt": null
+    }
+  ]
+}

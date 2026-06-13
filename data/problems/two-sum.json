@@ -1,0 +1,14 @@
+{
+  "title": "Two Sum",
+  "slug": "two-sum",
+  "difficulty": "Easy",
+  "questionUrl": "https://leetcode.com/problems/two-sum/",
+  "question": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+  "solutionLanguage": "JavaScript",
+  "solutionCode": "function twoSum(nums, target) {\n  const map = new Map();\n\n  for (let i = 0; i < nums.length; i++) {\n    const need = target - nums[i];\n\n    if (map.has(need)) {\n      return [map.get(need), i];\n    }\n\n    map.set(nums[i], i);\n  }\n\n  return [];\n}",
+  "explanation": "We use a hash map to store numbers we have already seen. For each number, we check whether the needed value already exists in the map.",
+  "approach": "Hash Map",
+  "timeComplexity": "O(n)",
+  "spaceComplexity": "O(n)",
+  "updatedAt": "2026-06-13T03:17:19.026Z"
+}

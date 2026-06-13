@@ -25,6 +25,7 @@ This project does **not** fetch solution code from LeetCode and does **not** exp
 │   ├── metadata.json
 │   ├── problems/
 │   └── solutions/
+│       ├── index.json
 │       └── README.md
 ├── scripts/
 │   ├── build-problem-details.js
@@ -48,7 +49,8 @@ The sync process:
 4. Fetches recent accepted submissions using `recentAcSubmissionList`
 5. Fetches question metadata for each recent accepted problem
 6. Writes clean JSON output into the `data/` directory
-7. Builds per-problem detail JSON only when a matching real solution file exists in `data/solutions/`
+7. Merges recent accepted problems with `data/solutions/index.json`
+8. Builds per-problem detail JSON only when a matching real solution file exists in `data/solutions/`
 
 ## No Mock Data Policy
 
@@ -58,6 +60,7 @@ The sync process:
 - No LeetCode session cookie is stored or exposed
 - Only real synced LeetCode metadata is used
 - Solution code is only read from your committed local files
+- Older solved problems with local code must be declared in `data/solutions/index.json`
 
 ## Requirements
 
@@ -189,11 +192,15 @@ SunilCraft can use each problem item's `detailUrl` to fetch a full solved proble
 
 ## How To Add Real Solution Code
 
+For older solved problems that are not in the recent accepted sync list, first add them to:
+
+- `data/solutions/index.json`
+
 Add a real accepted solution file at:
 
 - `data/solutions/{slug}.js`
 
-The filename must match the LeetCode `slug` from `leetcode-problems.json`.
+The filename must match the LeetCode `slug` from either `leetcode-problems.json` or `data/solutions/index.json`.
 
 Each solution file must start with a block comment that contains your own metadata, followed by your real solution code. The build script reads that file and generates:
 
@@ -229,6 +236,7 @@ The sync script fails clearly when:
 - The LeetCode response is malformed
 - A real solution file exists but is missing required metadata
 - A real solution file exists but does not contain solution code
+- A solution file exists locally but is missing from both `leetcode-problems.json` and `data/solutions/index.json`
 
 If recent submissions are empty, the script still generates valid JSON with an empty `problems` array.
 
@@ -243,8 +251,9 @@ npm run sync
 This command:
 
 1. Syncs live LeetCode stats and recent accepted problems
-2. Rebuilds `detailUrl` values in `data/leetcode-problems.json`
-3. Generates `data/problems/{slug}.json` only for problems that have a real matching solution file
+2. Merges those problems with `data/solutions/index.json`
+3. Rebuilds `detailUrl` values in `data/leetcode-problems.json`
+4. Generates `data/problems/{slug}.json` only for problems that have a real matching solution file
 
 ## Notes
 

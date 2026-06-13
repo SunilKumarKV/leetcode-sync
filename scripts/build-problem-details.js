@@ -6,6 +6,7 @@ const RAW_BASE_URL =
   "https://raw.githubusercontent.com/SunilKumarKV/leetcode-sync/main/data/problems";
 const SOLUTION_DIRECTORY_NAME = "solutions";
 const PROBLEM_DIRECTORY_NAME = "problems";
+const SOLUTION_INDEX_FILE_NAME = "index.json";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,6 +15,7 @@ const dataDirectory = path.join(rootDirectory, "data");
 const problemsIndexPath = path.join(dataDirectory, "leetcode-problems.json");
 const solutionsDirectory = path.join(dataDirectory, SOLUTION_DIRECTORY_NAME);
 const problemDetailsDirectory = path.join(dataDirectory, PROBLEM_DIRECTORY_NAME);
+const solutionIndexPath = path.join(solutionsDirectory, SOLUTION_INDEX_FILE_NAME);
 
 function createError(message, details) {
   const error = new Error(message);
@@ -56,6 +58,99 @@ async function loadProblemsIndex() {
   } catch (error) {
     throw createError(`Invalid JSON in "${problemsIndexPath}".`, error);
   }
+}
+
+async function loadSolutionIndex() {
+  let content;
+
+  try {
+    content = await readFile(solutionIndexPath, "utf8");
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return { solutions: [] };
+    }
+
+    throw createError(`Failed to read solution index "${solutionIndexPath}".`, error);
+  }
+
+  let parsed;
+
+  try {
+    parsed = JSON.parse(content);
+  } catch (error) {
+    throw createError(`Invalid JSON in "${solutionIndexPath}".`, error);
+  }
+
+  const solutions = Array.isArray(parsed.solutions) ? parsed.solutions : [];
+
+  return { solutions };
+}
+
+function normalizeProblemRecord(record) {
+  return {
+    title: record.title,
+    slug: record.slug,
+    difficulty: record.difficulty ?? null,
+    url: record.url,
+    platform: record.platform ?? "LeetCode",
+    status: record.status ?? "Solved",
+    solvedAt: record.solvedAt ?? null
+  };
+}
+
+function validateProblemRecord(record, sourceLabel) {
+  if (!record || typeof record !== "object") {
+    throw createError(`Invalid problem record in ${sourceLabel}.`);
+  }
+
+  for (const field of ["title", "slug", "url"]) {
+    if (typeof record[field] !== "string" || !record[field].trim()) {
+      throw createError(`Problem record in ${sourceLabel} is missing required field "${field}".`);
+    }
+  }
+}
+
+function mergeProblemSources(syncedProblems, indexedSolutions) {
+  const mergedProblems = new Map();
+
+  for (const problem of syncedProblems) {
+    validateProblemRecord(problem, "data/leetcode-problems.json");
+    mergedProblems.set(problem.slug, normalizeProblemRecord(problem));
+  }
+
+  for (const solution of indexedSolutions) {
+    validateProblemRecord(solution, "data/solutions/index.json");
+
+    const existing = mergedProblems.get(solution.slug);
+    const normalized = normalizeProblemRecord(solution);
+
+    if (!existing) {
+      mergedProblems.set(solution.slug, normalized);
+      continue;
+    }
+
+    mergedProblems.set(solution.slug, {
+      ...normalized,
+      ...existing,
+      title: existing.title || normalized.title,
+      difficulty: existing.difficulty ?? normalized.difficulty,
+      url: existing.url || normalized.url,
+      platform: existing.platform || normalized.platform,
+      status: existing.status || normalized.status,
+      solvedAt: existing.solvedAt ?? normalized.solvedAt
+    });
+  }
+
+  return [...mergedProblems.values()].sort((left, right) => {
+    const leftTime = left.solvedAt ? Date.parse(left.solvedAt) : Number.NEGATIVE_INFINITY;
+    const rightTime = right.solvedAt ? Date.parse(right.solvedAt) : Number.NEGATIVE_INFINITY;
+
+    if (leftTime !== rightTime) {
+      return rightTime - leftTime;
+    }
+
+    return left.slug.localeCompare(right.slug);
+  });
 }
 
 function parseHeaderBlock(source, slug) {
@@ -219,11 +314,15 @@ async function removeStaleDetailFiles(activeSlugs) {
 
 async function buildProblemDetails() {
   const problemsIndex = await loadProblemsIndex();
-  const problems = Array.isArray(problemsIndex.problems) ? problemsIndex.problems : [];
+  const syncedProblems = Array.isArray(problemsIndex.problems) ? problemsIndex.problems : [];
+  const solutionIndex = await loadSolutionIndex();
+  const problems = mergeProblemSources(syncedProblems, solutionIndex.solutions);
   const solutionFiles = await listSolutionSlugs();
   const syncedProblemSlugs = new Set(problems.map((problem) => problem.slug));
 
-  console.log(`[details] Building problem details for ${problems.length} synced problems...`);
+  console.log(
+    `[details] Building problem details for ${problems.length} merged problem(s) (${syncedProblems.length} synced, ${solutionIndex.solutions.length} indexed)...`
+  );
 
   await mkdir(problemDetailsDirectory, { recursive: true });
 
@@ -275,7 +374,7 @@ async function buildProblemDetails() {
 
     logSkipped(
       solutionFile.slug,
-      "solution file exists but no synced LeetCode problem matches this slug"
+      "Orphaned solution file found. Add it to data/solutions/index.json"
     );
   }
 
