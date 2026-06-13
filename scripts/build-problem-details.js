@@ -35,6 +35,10 @@ function getDetailPath(slug) {
   return path.join(problemDetailsDirectory, `${slug}.json`);
 }
 
+function toRelativeDataPath(filePath) {
+  return path.relative(rootDirectory, filePath) || filePath;
+}
+
 async function loadProblemsIndex() {
   let content;
 
@@ -58,9 +62,7 @@ function parseHeaderBlock(source, slug) {
   const match = source.match(/^\/\*\s*([\s\S]*?)\s*\*\//);
 
   if (!match) {
-    throw createError(
-      `Solution file "${slug}.js" is missing the required metadata header comment.`
-    );
+    throw createError(`Solution file ${slug}.js is missing metadata header.`);
   }
 
   const metadata = {};
@@ -154,6 +156,39 @@ async function loadSolutionDetail(problem) {
   return buildDetailJson(problem, normalizedMetadata, solutionCode);
 }
 
+async function listSolutionSlugs() {
+  await mkdir(solutionsDirectory, { recursive: true });
+
+  const entries = await readdir(solutionsDirectory, { withFileTypes: true });
+
+  return entries
+    .filter((entry) => entry.isFile() && path.extname(entry.name) === ".js")
+    .map((entry) => ({
+      slug: path.basename(entry.name, ".js"),
+      fileName: entry.name,
+      filePath: path.join(solutionsDirectory, entry.name)
+    }))
+    .sort((left, right) => left.slug.localeCompare(right.slug));
+}
+
+function logProblemCheck(problem, solutionPath, exists) {
+  console.log(`[details] Slug: ${problem.slug}`);
+  console.log(`[details] Expected: ${toRelativeDataPath(solutionPath)}`);
+  console.log(`[details] Exists: ${exists}`);
+}
+
+function logGenerated(detailPath) {
+  console.log("[details] Generated:");
+  console.log(`[details] ${toRelativeDataPath(detailPath)}`);
+}
+
+function logSkipped(slug, reason) {
+  console.log("[details] Skipped:");
+  console.log(`[details] ${slug}`);
+  console.log("[details] Reason:");
+  console.log(`[details] ${reason}`);
+}
+
 async function writeJsonFile(filePath, data) {
   await writeFile(filePath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
   console.log(`[details] Wrote ${filePath}`);
@@ -185,19 +220,36 @@ async function removeStaleDetailFiles(activeSlugs) {
 async function buildProblemDetails() {
   const problemsIndex = await loadProblemsIndex();
   const problems = Array.isArray(problemsIndex.problems) ? problemsIndex.problems : [];
+  const solutionFiles = await listSolutionSlugs();
+  const syncedProblemSlugs = new Set(problems.map((problem) => problem.slug));
 
   console.log(`[details] Building problem details for ${problems.length} synced problems...`);
 
-  await mkdir(solutionsDirectory, { recursive: true });
   await mkdir(problemDetailsDirectory, { recursive: true });
 
   const activeDetailSlugs = new Set();
 
   const updatedProblems = await Promise.all(
     problems.map(async (problem) => {
+      const solutionPath = getSolutionPath(problem.slug);
+      const hasSolutionFile = solutionFiles.some((item) => item.slug === problem.slug);
+
+      logProblemCheck(problem, solutionPath, hasSolutionFile);
+
+      if (!hasSolutionFile) {
+        logSkipped(problem.slug, "solution file not found");
+
+        return {
+          ...problem,
+          detailUrl: null
+        };
+      }
+
       const detail = await loadSolutionDetail(problem);
 
       if (!detail) {
+        logSkipped(problem.slug, "solution file not found");
+
         return {
           ...problem,
           detailUrl: null
@@ -207,6 +259,7 @@ async function buildProblemDetails() {
       const detailPath = getDetailPath(problem.slug);
       await writeJsonFile(detailPath, detail);
       activeDetailSlugs.add(problem.slug);
+      logGenerated(detailPath);
 
       return {
         ...problem,
@@ -214,6 +267,17 @@ async function buildProblemDetails() {
       };
     })
   );
+
+  for (const solutionFile of solutionFiles) {
+    if (syncedProblemSlugs.has(solutionFile.slug)) {
+      continue;
+    }
+
+    logSkipped(
+      solutionFile.slug,
+      "solution file exists but no synced LeetCode problem matches this slug"
+    );
+  }
 
   await removeStaleDetailFiles(activeDetailSlugs);
 
