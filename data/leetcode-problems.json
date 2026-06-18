@@ -1,7 +1,17 @@
 {
   "username": "Sunil-Kumar-K-V",
-  "count": 12,
+  "count": 13,
   "problems": [
+    {
+      "title": "Roman to Integer",
+      "slug": "roman-to-integer",
+      "difficulty": "Easy",
+      "url": "https://leetcode.com/problems/roman-to-integer/",
+      "platform": "LeetCode",
+      "status": "Solved",
+      "solvedAt": "2026-06-18T10:59:28.000Z",
+      "detailUrl": null
+    },
     {
       "title": "Add Digits",
       "slug": "add-digits",
@@ -123,5 +133,5 @@
       "detailUrl": null
     }
   ],
-  "updatedAt": "2026-06-18T10:00:31.363Z"
+  "updatedAt": "2026-06-18T14:36:48.359Z"
 }
