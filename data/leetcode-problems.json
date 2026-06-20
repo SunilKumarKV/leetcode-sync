@@ -1,7 +1,17 @@
 {
   "username": "Sunil-Kumar-K-V",
-  "count": 14,
+  "count": 15,
   "problems": [
+    {
+      "title": "Valid Parentheses",
+      "slug": "valid-parentheses",
+      "difficulty": "Easy",
+      "url": "https://leetcode.com/problems/valid-parentheses/",
+      "platform": "LeetCode",
+      "status": "Solved",
+      "solvedAt": "2026-06-19T20:51:38.000Z",
+      "detailUrl": null
+    },
     {
       "title": "Longest Common Prefix",
       "slug": "longest-common-prefix",
@@ -143,5 +153,5 @@
       "detailUrl": null
     }
   ],
-  "updatedAt": "2026-06-19T19:20:23.409Z"
+  "updatedAt": "2026-06-20T01:58:35.932Z"
 }
