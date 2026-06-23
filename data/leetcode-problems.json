@@ -3,6 +3,16 @@
   "count": 15,
   "problems": [
     {
+      "title": "Create Hello World Function",
+      "slug": "create-hello-world-function",
+      "difficulty": "Easy",
+      "url": "https://leetcode.com/problems/create-hello-world-function/",
+      "platform": "LeetCode",
+      "status": "Solved",
+      "solvedAt": "2026-06-23T17:52:19.000Z",
+      "detailUrl": null
+    },
+    {
       "title": "Valid Parentheses",
       "slug": "valid-parentheses",
       "difficulty": "Easy",
@@ -141,17 +151,7 @@
       "status": "Solved",
       "solvedAt": "2025-09-14T16:07:01.000Z",
       "detailUrl": null
-    },
-    {
-      "title": "Create Hello World Function",
-      "slug": "create-hello-world-function",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/create-hello-world-function/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-09-14T16:02:44.000Z",
-      "detailUrl": null
     }
   ],
-  "updatedAt": "2026-06-23T14:12:49.943Z"
+  "updatedAt": "2026-06-23T19:45:41.015Z"
 }
