@@ -1,6 +1,6 @@
 {
   "username": "Sunil-Kumar-K-V",
-  "count": 15,
+  "count": 14,
   "problems": [
     {
       "title": "Create Hello World Function",
@@ -141,17 +141,7 @@
       "status": "Solved",
       "solvedAt": "2025-09-15T17:42:59.000Z",
       "detailUrl": null
-    },
-    {
-      "title": "Counter",
-      "slug": "counter",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/counter/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-09-14T16:07:01.000Z",
-      "detailUrl": null
     }
   ],
-  "updatedAt": "2026-09-14T21:04:19.900Z"
+  "updatedAt": "2026-09-15T01:58:24.326Z"
 }
