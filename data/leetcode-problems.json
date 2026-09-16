@@ -1,6 +1,6 @@
 {
   "username": "Sunil-Kumar-K-V",
-  "count": 14,
+  "count": 12,
   "problems": [
     {
       "title": "Create Hello World Function",
@@ -121,27 +121,7 @@
       "status": "Solved",
       "solvedAt": "2025-09-16T15:53:56.000Z",
       "detailUrl": null
-    },
-    {
-      "title": "Counter II",
-      "slug": "counter-ii",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/counter-ii/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-09-15T17:50:31.000Z",
-      "detailUrl": null
-    },
-    {
-      "title": "To Be Or Not To Be",
-      "slug": "to-be-or-not-to-be",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/to-be-or-not-to-be/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-09-15T17:42:59.000Z",
-      "detailUrl": null
     }
   ],
-  "updatedAt": "2026-09-15T20:29:26.580Z"
+  "updatedAt": "2026-09-16T01:49:06.388Z"
 }
