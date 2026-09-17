@@ -1,6 +1,6 @@
 {
   "username": "Sunil-Kumar-K-V",
-  "count": 12,
+  "count": 10,
   "problems": [
     {
       "title": "Create Hello World Function",
@@ -101,27 +101,7 @@
       "status": "Solved",
       "solvedAt": "2025-11-07T14:14:31.000Z",
       "detailUrl": null
-    },
-    {
-      "title": "Filter Elements from Array",
-      "slug": "filter-elements-from-array",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/filter-elements-from-array/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-09-16T16:07:16.000Z",
-      "detailUrl": null
-    },
-    {
-      "title": "Apply Transform Over Each Element in Array",
-      "slug": "apply-transform-over-each-element-in-array",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/apply-transform-over-each-element-in-array/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-09-16T15:53:56.000Z",
-      "detailUrl": null
     }
   ],
-  "updatedAt": "2026-09-16T20:28:45.461Z"
+  "updatedAt": "2026-09-17T01:52:50.779Z"
 }
