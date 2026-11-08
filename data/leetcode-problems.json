@@ -1,6 +1,6 @@
 {
   "username": "Sunil-Kumar-K-V",
-  "count": 10,
+  "count": 9,
   "problems": [
     {
       "title": "Create Hello World Function",
@@ -91,17 +91,7 @@
       "status": "Solved",
       "solvedAt": "2026-06-12T17:52:22.000Z",
       "detailUrl": null
-    },
-    {
-      "title": "Array Reduce Transformation",
-      "slug": "array-reduce-transformation",
-      "difficulty": "Easy",
-      "url": "https://leetcode.com/problems/array-reduce-transformation/",
-      "platform": "LeetCode",
-      "status": "Solved",
-      "solvedAt": "2025-11-07T14:14:31.000Z",
-      "detailUrl": null
     }
   ],
-  "updatedAt": "2026-11-07T21:06:40.239Z"
+  "updatedAt": "2026-11-08T02:48:55.157Z"
 }
